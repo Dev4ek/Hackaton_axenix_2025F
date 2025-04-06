@@ -2,13 +2,13 @@ import { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-export default function AnimatedCustomerAgent({ path, color }: any) {
+export default function AnimatedCustomerAgent({ path, color,fast }: any) {
 const groupRef = useRef<THREE.Group>(null!);
 const [currentIndex, setCurrentIndex] = useState<number>(0);
 const [startTime, setStartTime] = useState<number | null>(null);
 const directionRef = useRef<THREE.Vector3>(new THREE.Vector3(0, 0, 1)); // стартовое направление
 
-const timeScale = 0.001;
+const timeScale = fast ? 1 : 0.001;
 
 useEffect(() => {
     setStartTime(Date.now());

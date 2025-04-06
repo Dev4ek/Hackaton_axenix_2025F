@@ -95,7 +95,7 @@ export default function App() {
   const [newProductDiscountEnd, setNewProductDiscountEnd] = useState<number | undefined>(undefined);
   const [dataAnalitik, setDataAnalitik] = useState<any>()
   const [valuePeople, setValuePeople] = useState<number>(50)
-  const [ setFastWork] = useState<any>()
+  const [FastWork, setFastWork] = useState<any>(false)
 
   const [tovary, setTovary] = useState<any>();
 
@@ -446,7 +446,7 @@ export default function App() {
 
         <div className='w-full max-w-md mx-auto p-4'>
           <button
-            onClick={() => setFastWork}
+            onClick={() => setFastWork(true)}
             className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
           >
             Быстрая симуляция
@@ -544,7 +544,8 @@ export default function App() {
             <AnimatedCustomerAgent 
               key={result.client} 
               path={result.path} 
-              color={colors[index % colors.length]} 
+              color={colors[index % colors.length]}
+              fast={FastWork} 
             />
     ))}
           <PopularZonesAggregated zones={dataAnalitik?.popular_zones} gridSize={1} />
