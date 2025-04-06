@@ -1,9 +1,10 @@
 import { useLoader } from '@react-three/fiber';
 import { TextureLoader, RepeatWrapping } from 'three';
+import asset  from '../assets/pol.jpg'
 
 
 export default function Floor({ onPointerUp, onPointerMove, x, y, ...props }: any) {
-    const texture = useLoader(TextureLoader, '../../public/pol.jpg');
+    const texture = useLoader(TextureLoader, asset);
 
     texture.wrapS = RepeatWrapping;
     texture.wrapT = RepeatWrapping;

@@ -95,6 +95,7 @@ export default function App() {
   const [newProductDiscountEnd, setNewProductDiscountEnd] = useState<number | undefined>(undefined);
   const [dataAnalitik, setDataAnalitik] = useState<any>()
   const [valuePeople, setValuePeople] = useState<number>(50)
+  const [ setFastWork] = useState<any>()
 
   const [tovary, setTovary] = useState<any>();
 
@@ -441,6 +442,15 @@ export default function App() {
             className="w-full px-4 py-2 border border-gray-300 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValuePeople(Number(e.target.value))}
           />
+        </div>
+
+        <div className='w-full max-w-md mx-auto p-4'>
+          <button
+            onClick={() => setFastWork}
+            className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+          >
+            Быстрая симуляция
+          </button>
         </div>
       </div>
       <div className="flex-1 relative">

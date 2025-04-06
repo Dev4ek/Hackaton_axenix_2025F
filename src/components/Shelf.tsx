@@ -15,21 +15,54 @@ position: [number, number, number];
 label: string;
 color: string;
 onClick?: () => void;
-// Добавим массив продуктов
 products?: ProductData[];
 }
 
-export default function Shelf({ position, label, onClick, color, products = [] }: ShelfProps) {
+export default function Shelf({
+position,
+label,
+onClick,
+color,
+products = [],
+}: ShelfProps) {
+const shelfWidth = 2.5;
+const shelfHeight = 4;
+const shelfDepth = 0.5;
+const shelfLevels = 3;
+const shelfThickness = 0.05;
+
+const shelfSpacing = shelfHeight / (shelfLevels + 1);
+
+const offsetY = -shelfHeight / 2;
+
 return (
-    <group position={position} onClick={onClick}>
-    {/* Сам корпус полки */}
-    <mesh castShadow>
-        <boxGeometry args={[2.5, 4.5, 0.2]} />
+    <group position={[position[0], position[1] + shelfHeight / 2, position[2]]} onClick={onClick}>
+    <mesh castShadow position={[0, offsetY, 0]}>
+        <boxGeometry args={[shelfWidth, shelfHeight, shelfThickness]} />
         <meshStandardMaterial color={color} />
     </mesh>
 
+    <mesh position={[-shelfWidth / 2 + shelfThickness / 2, offsetY, shelfDepth / 2]}>
+        <boxGeometry args={[shelfThickness, shelfHeight, shelfDepth]} />
+        <meshStandardMaterial color="#888" />
+    </mesh>
+    <mesh position={[shelfWidth / 2 - shelfThickness / 2, offsetY, shelfDepth / 2]}>
+        <boxGeometry args={[shelfThickness, shelfHeight, shelfDepth]} />
+        <meshStandardMaterial color="#888" />
+    </mesh>
+
+    {[...Array(shelfLevels)].map((_, i) => {
+        const y = offsetY + shelfSpacing * (i + 1);
+        return (
+        <mesh key={i} position={[0, y, shelfDepth / 2]}>
+            <boxGeometry args={[shelfWidth - shelfThickness * 2, shelfThickness, shelfDepth]} />
+            <meshStandardMaterial color="#aaa" />
+        </mesh>
+        );
+    })}
+
     <Text
-        position={[0, 1, 0.51]}
+        position={[0, 0.3, 0.3]}
         fontSize={0.3}
         color="#000"
         anchorX="center"
@@ -38,33 +71,35 @@ return (
         {label}
     </Text>
 
-    {products.map((product, i) => {
-        const gridColumns = 3; 
-        const row = Math.floor(i / gridColumns);
-        const col = i % gridColumns;
-        
-        const offsetX = col; 
-        const offsetY = 0.3 + row; 
-        const offsetZ = 0;
+    {/* Товары на полках */}
+    {products.map((product, index) => {
+        const columns = 4;
+        const itemsPerShelf = columns;
+        const level = Math.floor(index / itemsPerShelf);
+        const positionInRow = index % columns;
+
+        const xOffset = -shelfWidth / 2 + shelfThickness + 0.3 + positionInRow * 0.6;
+        const yOffset = offsetY + shelfSpacing * (level + 1) + 0.2;
+        const zOffset = shelfDepth / 2 + 0.05;
 
         return (
-            <group key={product.id} position={[offsetX, offsetY, offsetZ]}>
+        <group key={product.id} position={[xOffset, yOffset, zOffset]}>
             <mesh>
-                <boxGeometry args={[0.3, 0.3, 0.3]} />
-                <meshStandardMaterial color={product.color_hex} />
+            <boxGeometry args={[0.3, 0.3, 0.3]} />
+            <meshStandardMaterial color={product.color_hex} />
             </mesh>
             <Text
-                position={[0, 0.3, 0]}
-                fontSize={0.15}
-                color="#000"
-                anchorX="center"
-                anchorY="bottom"
+            position={[0, 0.25, 0]}
+            fontSize={0.12}
+            color="#000"
+            anchorX="center"
+            anchorY="bottom"
             >
-                {product.name}
+            {product.name}
             </Text>
-            </group>
+        </group>
         );
-        })}
+    })}
     </group>
 );
 }
